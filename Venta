@@ -1,0 +1,34 @@
+public class Venta {
+    private int id;
+    private String ubicacion;
+    private double costoBase;
+    private double descuentoAplicado;
+    private double costoFinal;
+
+    public Venta(int id, String ubicacion, double costoBase, double descuentoAplicado, double costoFinal) {
+        this.id = id;
+        this.ubicacion = ubicacion;
+        this.costoBase = costoBase;
+        this.descuentoAplicado = descuentoAplicado;
+        this.costoFinal = costoFinal;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Ubicación: " + ubicacion + ", Costo Base: $" + costoBase +
+                ", Descuento: $" + descuentoAplicado + ", Costo Final: $" + costoFinal;
+    }
+
+    public String detalleBoleta() {
+        return "ID: " + id + "\n" +
+                "Ubicación: " + ubicacion + "\n" +
+                "Costo Base: $" + costoBase + "\n" +
+                "Descuento Aplicado: $" + descuentoAplicado + "\n" +
+                "Costo Final: $" + costoFinal + "\n" +
+                "¡Gracias por su visita al Teatro Moro!";
+    }
+}
