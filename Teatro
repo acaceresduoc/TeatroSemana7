@@ -1,0 +1,88 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Teatro {
+    private String nombreTeatro;
+    private int capacidadSala;
+    private int entradasDisponibles;
+    private double precioUnitario;
+
+    private static int totalEntradasVendidas = 0;
+    private static double totalIngresos = 0.0;
+    private static int totalDescuentosAplicados = 0;
+
+    private List<Venta> ventasRealizadas;
+    private int contadorVentas = 0;
+
+    public Teatro(String nombreTeatro, int capacidadSala, double precioUnitario) {
+        this.nombreTeatro = nombreTeatro;
+        this.capacidadSala = capacidadSala;
+        this.entradasDisponibles = capacidadSala;
+        this.precioUnitario = precioUnitario;
+        this.ventasRealizadas = new ArrayList<>();
+    }
+
+    public boolean venderEntrada(String ubicacion, boolean esEstudiante, boolean esTerceraEdad) {
+        if (entradasDisponibles <= 0) {
+            System.out.println("No hay entradas disponibles.");
+            return false;
+        }
+
+        double costoBase = calcularCostoBase(ubicacion);
+        double descuento = 0.0;
+
+        if (esEstudiante) {
+            descuento = costoBase * 0.10;
+        } else if (esTerceraEdad) {
+            descuento = costoBase * 0.15;
+        }
+
+        double costoFinal = costoBase - descuento;
+
+        ventasRealizadas.add(new Venta(++contadorVentas, ubicacion, costoBase, descuento, costoFinal));
+        totalEntradasVendidas++;
+        totalIngresos += costoFinal;
+
+        if (descuento > 0) {
+            totalDescuentosAplicados++;
+        }
+
+        entradasDisponibles--;
+        System.out.println("Entrada vendida exitosamente. Costo final: $" + costoFinal);
+        return true;
+    }
+
+    private double calcularCostoBase(String ubicacion) {
+        return switch (ubicacion.toLowerCase()) {
+            case "vip" -> precioUnitario * 1.5;
+            case "platea" -> precioUnitario * 1.2;
+            case "balcón" -> precioUnitario;
+            default -> precioUnitario;
+        };
+    }
+
+    public void mostrarResumenVentas() {
+        System.out.println("\n--- Resumen de Ventas ---");
+        for (Venta venta : ventasRealizadas) {
+            System.out.println(venta);
+        }
+        System.out.println("Total de entradas vendidas: " + totalEntradasVendidas);
+        System.out.println("Total de ingresos: $" + totalIngresos);
+        System.out.println("Total de descuentos aplicados: " + totalDescuentosAplicados);
+    }
+
+    public void generarBoleta(int idVenta) {
+        for (Venta venta : ventasRealizadas) {
+            if (venta.getId() == idVenta) {
+                System.out.println("\n--- Teatro Moro ---");
+                System.out.println(venta.detalleBoleta());
+                return;
+            }
+        }
+        System.out.println("ID de venta no válido.");
+    }
+
+    public double getTotalIngresos() {
+        return totalIngresos;
+    }
+}
