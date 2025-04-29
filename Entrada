@@ -1,0 +1,42 @@
+public class Entrada {
+    private static final double PRECIO_BASE = 50.0;
+    private static final double DESCUENTO_ESTUDIANTE = 0.10;
+    private static final double DESCUENTO_TERCERA_EDAD = 0.15;
+
+    private int numeroAsiento;
+    private String ubicacion;
+    private boolean esEstudiante;
+    private boolean esTerceraEdad;
+
+    public Entrada(int numeroAsiento, String ubicacion, boolean esEstudiante, boolean esTerceraEdad) {
+        this.numeroAsiento = numeroAsiento;
+        this.ubicacion = ubicacion;
+        this.esEstudiante = esEstudiante;
+        this.esTerceraEdad = esTerceraEdad;
+    }
+
+    public int getNumeroAsiento() {
+        return numeroAsiento;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public double calcularPrecioConDescuento() {
+        double descuento = 0.0;
+        if (esEstudiante) {
+            descuento = DESCUENTO_ESTUDIANTE;
+        } else if (esTerceraEdad) {
+            descuento = DESCUENTO_TERCERA_EDAD;
+        }
+        return PRECIO_BASE * (1 - descuento);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Asiento: %d, Precio: $%.2f, Ubicación: %s, Estudiante: %s, Tercera Edad: %s",
+                numeroAsiento, calcularPrecioConDescuento(), ubicacion,
+                esEstudiante ? "Sí" : "No", esTerceraEdad ? "Sí" : "No");
+    }
+}
