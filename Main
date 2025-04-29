@@ -1,0 +1,90 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Teatro teatro = new Teatro("Teatro Moro", 100, 50.0);
+        Scanner scanner = new Scanner(System.in);
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n--- Menú ---");
+            System.out.println("1. Venta de entradas");
+            System.out.println("2. Visualizar resumen de ventas");
+            System.out.println("3. Generar boleta");
+            System.out.println("4. Calcular ingresos totales");
+            System.out.println("5. Salir");
+            System.out.print("Seleccione una opción: ");
+            int opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1 -> realizarVenta(teatro, scanner);
+                case 2 -> teatro.mostrarResumenVentas();
+                case 3 -> generarBoleta(teatro, scanner);
+                case 4 -> calcularIngresosTotales(teatro);
+                case 5 -> {
+                    salir = true;
+                    System.out.println("Gracias por su compra");
+                }
+                default -> System.out.println("Opción no válida. Intente nuevamente.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void realizarVenta(Teatro teatro, Scanner scanner) {
+        String ubicacion;
+        while (true) {
+            System.out.print("Ingrese la ubicación (VIP, Platea, Balcon): ");
+            ubicacion = scanner.nextLine().trim().toLowerCase();
+            if (ubicacion.equals("vip") || ubicacion.equals("platea") || ubicacion.equals("balcon")) {
+                break;
+            }
+            System.out.println("Ubicación no válida. Por favor, ingrese 'VIP', 'Platea' o 'Balcon'.");
+        }
+
+        boolean esEstudiante;
+        while (true) {
+            System.out.print("¿Es estudiante? (si/no): ");
+            String respuesta = scanner.nextLine().trim().toLowerCase();
+            if (respuesta.equals("si")) {
+                esEstudiante = true;
+                break;
+            } else if (respuesta.equals("no")) {
+                esEstudiante = false;
+                break;
+            }
+            System.out.println("Respuesta no válida. Por favor, ingrese 'si' o 'no'.");
+        }
+
+        boolean esTerceraEdad;
+        while (true) {
+            System.out.print("¿Es de tercera edad? (si/no): ");
+            String respuesta = scanner.nextLine().trim().toLowerCase();
+            if (respuesta.equals("si")) {
+                esTerceraEdad = true;
+                break;
+            } else if (respuesta.equals("no")) {
+                esTerceraEdad = false;
+                break;
+            }
+            System.out.println("Respuesta no válida. Por favor, ingrese 'si' o 'no'.");
+        }
+
+        teatro.venderEntrada(ubicacion, esEstudiante, esTerceraEdad);
+    }
+
+    private static void generarBoleta(Teatro teatro, Scanner scanner) {
+        System.out.print("Ingrese el ID de la venta para generar la boleta: ");
+        int idVenta = scanner.nextInt();
+        scanner.nextLine();
+
+        teatro.generarBoleta(idVenta);
+    }
+
+    private static void calcularIngresosTotales(Teatro teatro) {
+        System.out.println("\n--- Ingresos Totales ---");
+        System.out.println("Total acumulado: $" + teatro.getTotalIngresos());
+    }
+}
